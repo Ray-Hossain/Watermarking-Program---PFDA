@@ -1,10 +1,10 @@
-# Title
+# Watermarking Program
 
 ## Repository
-<Link to your project's public GitHub respository>
+<https://github.com/Ray-Hossain/Watermarking-Program---PFDArespository>
 
 ## Description
-1-2 sentence description of what it will do and how it relevant to media and digital arts.
+A program that, when given your own personal watermark, will superimpose it onto a given image. A good tool for artists that want to post their work without fear of it being stolen.
 
 ## Features
 - Feature 1
