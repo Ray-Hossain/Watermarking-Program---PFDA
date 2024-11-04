@@ -1,7 +1,7 @@
 # Watermarking Program
 
 ## Repository
-<https://github.com/Ray-Hossain/Watermarking-Program---PFDArespository>
+<https://github.com/Ray-Hossain/Watermarking-Program---PFDA>
 
 ## Description
 A program that, when given your own personal watermark, will superimpose it onto a given image. A good tool for artists that want to post their work without fear of it being stolen.
