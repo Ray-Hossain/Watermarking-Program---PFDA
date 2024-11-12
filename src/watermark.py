@@ -5,11 +5,14 @@ def main():
     with (Image.open('img//RetroComputer_IJustGoByRay.png') as img,
           Image.open('watermark(s)//IJustGoByRay_LOGO_C.png') as wm):
         resized_wm = wm.resize((wm.width//2, wm.height//2))
-        multiply_wm = ImageChops.multiply(img, resized_wm)
-        x = random.randrange(10, (img.width-resized_wm.width))
-        y = random.randrange(10, (img.height-resized_wm.height))
-        img.paste(multiply_wm, (x, y), mask=multiply_wm.getchannel('A'))
+        new_img = Image.new('RGBA', size=(img.width, img.height), color=(255, 255, 255, 0))
+        # multiply_wm = ImageChops.multiply(img, resized_wm)
+        x = random.randrange(5, (new_img.width-resized_wm.width))
+        y = random.randrange(5, (new_img.height-resized_wm.height))
+        new_img.paste(resized_wm, (x, y), mask=resized_wm.getchannel('A'))
+        img.paste(new_img, (0,0), mask=new_img.getchannel('A'))
         img.show()
+        
 
 if __name__ == "__main__":
     main()
