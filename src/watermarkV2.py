@@ -1,5 +1,13 @@
 import pygame
 
+class Shape():
+    def __init__(self, surface, color, pos, size):
+        self.surface = surface
+        self.pos = pos
+        self.size = size
+        self.color = color
+
+
 def main():
     pygame.init()
     pygame.display.set_caption("WaterMarker")
