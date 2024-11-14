@@ -74,8 +74,8 @@ def open_wm(press):
 
 def save(image, watermark):
     filepath = filedialog.askdirectory()
-    with (Image.open(image) as img,
-          Image.open(watermark) as wm):
+    with (Image.open(f"r{image}") as img,
+          Image.open(f"r{watermark}") as wm):
         resized_wm = wm.resize((wm.width//2, wm.height//2))
         new_img = Image.new('RGBA', size=(img.width, img.height), color=(255, 255, 255, 0))
         x = random.randrange(5, (new_img.width-resized_wm.width))
