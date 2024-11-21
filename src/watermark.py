@@ -10,7 +10,9 @@ def main():
         x = random.randrange(5, (new_img.width-resized_wm.width))
         y = random.randrange(5, (new_img.height-resized_wm.height))
         new_img.paste(resized_wm, (x, y), mask=resized_wm.getchannel('A'))
-        img.paste(new_img, (0,0), mask=new_img.getchannel('A'))
+        # img.paste(new_img, (0,0), mask=new_img.getchannel('A'))
+        out_img = Image.blend(img, new_img, 0.5)
+        out_img.show()
         img.show()
         
 
