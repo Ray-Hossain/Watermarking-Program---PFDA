@@ -87,6 +87,8 @@ def save(image, watermark):
             y = random.randrange(5, (new_img.height-resized_wm.height))
             new_img.paste(resized_wm, (x, y), mask=resized_wm.getchannel('A'))
             img.paste(new_img, (0,0), mask=new_img.getchannel('A'))
+            new_img.putalpha(int(255 * 0.2))
+            img.paste(new_img, (0, 0), new_img)
             img.save(filepath+"/test.png")
 
     except Exception as e:
