@@ -74,22 +74,36 @@ def open_wm(press):
 
 def save(image, watermark):
     filepath = filedialog.askdirectory()
-    with (Image.open(f"r{image}") as img,
-          Image.open(f"r{watermark}") as wm):
-        resized_wm = wm.resize((wm.width//2, wm.height//2))
-        new_img = Image.new('RGBA', size=(img.width, img.height), color=(255, 255, 255, 0))
-        x = random.randrange(5, (new_img.width-resized_wm.width))
-        y = random.randrange(5, (new_img.height-resized_wm.height))
-        new_img.paste(resized_wm, (x, y), mask=resized_wm.getchannel('A'))
-        img.paste(new_img, (0,0), mask=new_img.getchannel('A'))
-        img.save(filepath+"/test.png")
+
+    if not filepath:
+        print("Save path not selected")
+        return
+    try:
+        with Image.open(image) as img, Image.open(watermark) as wm:
+
+            resized_wm = wm.resize((wm.width//2, wm.height//2))
+            new_img = Image.new('RGBA', size=(img.width, img.height), color=(255, 255, 255, 0))
+            x = random.randrange(5, (new_img.width-resized_wm.width))
+            y = random.randrange(5, (new_img.height-resized_wm.height))
+            new_img.paste(resized_wm, (x, y), mask=resized_wm.getchannel('A'))
+            img.paste(new_img, (0,0), mask=new_img.getchannel('A'))
+            img.save(filepath+"/test.png")
+
+    except Exception as e:
+        print(f"Error saving imageL {e}")
 
 def main():
     pygame.init()
     pygame.display.set_caption("WaterMarker")
     resolution = (800, 600)
     screen = pygame.display.set_mode(resolution)
+
+    art = UI(screen)
+    gui_init(art)
+
     running = True
+    img = None
+    wm = None
     while running:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -97,16 +111,19 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 function = art.button(pygame.mouse.get_pos())
                 if function == "open_img":
-                    img = exec(f"{function}" + "(None)")
-                if function == "open_wm":
-                    wm = exec(f"{function}" + "(None)")
-                if function == "save":
-                    exec(f"{function}({img},{wm})")
+                    img = open_img(None)
+                elif function == "open_wm":
+                    wm = open_wm(None)
+                elif function == "save":
+                    if 'img' in locals() and 'wm' in locals():
+                        save(img, wm)
+                    else:
+                        print("Please select both an iamge and a watermakr being saving.")
+
         screen.fill(pygame.Color(30, 30, 30, 255))
-        art = UI(screen)
-        gui_init(art)
         art.draw()
         pygame.display.flip()
+        
     pygame.quit()
 
 if __name__ == "__main__":
