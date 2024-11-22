@@ -2,6 +2,7 @@ import pygame
 from tkinter import filedialog
 from PIL import Image
 import random
+import os
 
 class Shape():
     def __init__(self, surface, color, pos, size, function):
@@ -56,16 +57,15 @@ class UI():
 def gui_init(art):
     # for opening image button
     art.define_shape(pos=(100, 100), size=(100, 50), color=(255, 0, 0), function="open_img")
-    art.define_text(pos=(100, 100), size=50, text="IMG")
+    art.define_text(pos=(100, 100), size=50, text="Image")
+
     # for opening watermark button
     art.define_shape(pos=(300, 100), size=(100, 50), color=(255, 0, 0), function="open_wm")
-    art.define_text(pos=(300, 100), size=50, text="WM")
+    art.define_text(pos=(300, 100), size=50, text="Watermark")
+
     # for saving image button
     art.define_shape(pos=(300, 300), size=(100, 50), color=(255, 0, 0), function="save")
     art.define_text(pos=(300, 300), size=50, text="Save")
-
-# def change_opacity(watermark_path):
-#     opacity_wm = watermark_path.putalpha(int(255 * 0.2))
 
 def open_img(press):
     file_path = filedialog.askopenfilename()
@@ -76,7 +76,7 @@ def open_wm(press):
     return file_path
 
 def save(image, watermark):
-    filepath = filedialog.askdirectory()
+    filepath = filedialog.asksaveasfile()
 
     if not filepath:
         print("Save path not selected")
@@ -87,24 +87,28 @@ def save(image, watermark):
 
             resized_wm = wm.resize((wm.width//2, wm.height//2))
             transparent_wm = resized_wm.convert("RGBA")
+
             opacity = transparent_wm.getchannel("A")
             opacity = opacity.point(lambda p: p*0.6)
             transparent_wm.putalpha(opacity)
+
             new_img = Image.new('RGBA', size=(img.width, img.height), color=(255, 255, 255, 0))
             x = random.randrange(5, (new_img.width-resized_wm.width))
             y = random.randrange(5, (new_img.height-resized_wm.height))
             new_img.paste(transparent_wm, (x, y), mask=transparent_wm.getchannel('A'))
+
             img = img.convert("RGBA")
             img.alpha_composite(new_img)
-            img.save(filepath+"/sameple.png")
+            img.save(filepath.name+".png")
+            return filepath.name
             
 
     except Exception as e:
-        print(f"Error saving image {e}")
+        print(f"Error saving image: {e}")
 
 def main():
     pygame.init()
-    pygame.display.set_caption("WaterMarker")
+    pygame.display.set_caption("Watermark-er")
     resolution = (800, 600)
     screen = pygame.display.set_mode(resolution)
 
@@ -126,14 +130,14 @@ def main():
                     wm = open_wm(None)
                 elif function == "save":
                     if 'img' in locals() and 'wm' in locals():
-                        save(img, wm)
+                        file = save(img, wm)
+                        os.remove(file)
                     else:
-                        print("Please select both an iamge and a watermakr being saving.")
+                        print("Please select both an iamge and a watermark.")
 
         screen.fill(pygame.Color(30, 30, 30, 255))
         art.draw()
-        pygame.display.flip()
-        
+        pygame.display.flip() 
     pygame.quit()
 
 if __name__ == "__main__":
