@@ -64,6 +64,9 @@ def gui_init(art):
     art.define_shape(pos=(300, 300), size=(100, 50), color=(255, 0, 0), function="save")
     art.define_text(pos=(300, 300), size=50, text="Save")
 
+# def change_opacity(watermark_path):
+#     opacity_wm = watermark_path.putalpha(int(255 * 0.2))
+
 def open_img(press):
     file_path = filedialog.askopenfilename()
     return file_path
@@ -78,21 +81,24 @@ def save(image, watermark):
     if not filepath:
         print("Save path not selected")
         return
+
     try:
         with Image.open(image) as img, Image.open(watermark) as wm:
 
             resized_wm = wm.resize((wm.width//2, wm.height//2))
+            transparent_wm = resized_wm.convert("RGBA")
+            opacity = transparent_wm.getchannel("A")
+            opacity = opacity.point(lambda p: p*0.3)
+            transparent_wm.putalpha(opacity)
             new_img = Image.new('RGBA', size=(img.width, img.height), color=(255, 255, 255, 0))
             x = random.randrange(5, (new_img.width-resized_wm.width))
             y = random.randrange(5, (new_img.height-resized_wm.height))
-            new_img.paste(resized_wm, (x, y), mask=resized_wm.getchannel('A'))
-            img.paste(new_img, (0,0), mask=new_img.getchannel('A'))
-            new_img.putalpha(int(255 * 0.2))
-            img.paste(new_img, (0, 0), new_img)
-            img.save(filepath+"/test.png")
+            new_img.paste(transparent_wm, (x, y), mask=transparent_wm.getchannel('A'))
+            img.alpha_composite(new_img)
+            img.save(filepath+"/testV2.png")
 
     except Exception as e:
-        print(f"Error saving imageL {e}")
+        print(f"Error saving image {e}")
 
 def main():
     pygame.init()
