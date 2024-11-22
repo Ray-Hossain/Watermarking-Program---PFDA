@@ -56,16 +56,16 @@ class UI():
 
 def gui_init(art):
     # for opening image button
-    art.define_shape(pos=(100, 100), size=(100, 50), color=(255, 0, 0), function="open_img")
-    art.define_text(pos=(100, 100), size=50, text="Image")
+    art.define_shape(pos=(136, 60), size=(115, 60), color=(255, 0, 0), function="open_img")
+    art.define_text(pos=(136, 60), size=50, text="Image")
 
     # for opening watermark button
-    art.define_shape(pos=(300, 100), size=(100, 50), color=(255, 0, 0), function="open_wm")
-    art.define_text(pos=(300, 100), size=50, text="Watermark")
+    art.define_shape(pos=(96, 180), size=(200, 60), color=(255, 0, 0), function="open_wm")
+    art.define_text(pos=(96, 180), size=50, text="Watermark")
 
     # for saving image button
-    art.define_shape(pos=(300, 300), size=(100, 50), color=(255, 0, 0), function="save")
-    art.define_text(pos=(300, 300), size=50, text="Save")
+    art.define_shape(pos=(146, 300), size=(100, 50), color=(255, 0, 0), function="save")
+    art.define_text(pos=(146, 300), size=50, text="Save")
 
 def open_img(press):
     file_path = filedialog.askopenfilename()
@@ -109,7 +109,7 @@ def save(image, watermark):
 def main():
     pygame.init()
     pygame.display.set_caption("Watermark-er")
-    resolution = (800, 600)
+    resolution = (400, 400)
     screen = pygame.display.set_mode(resolution)
 
     art = UI(screen)
