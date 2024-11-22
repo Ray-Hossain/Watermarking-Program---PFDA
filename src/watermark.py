@@ -15,6 +15,7 @@ def main():
         img.paste(new_img, (0, 0), new_img)
         # img.paste(new_img, (0,0), mask=new_img.getchannel('A'))
         img.show()
+        print(img.info)
         
 
 if __name__ == "__main__":

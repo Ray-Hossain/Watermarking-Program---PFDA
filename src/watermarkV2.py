@@ -96,7 +96,8 @@ def save(image, watermark):
             new_img.paste(transparent_wm, (x, y), mask=transparent_wm.getchannel('A'))
             img = img.convert("RGBA")
             img.alpha_composite(new_img)
-            img.save(filepath+"/testV2.png")
+            img.save(filepath+"/sameple.png")
+            
 
     except Exception as e:
         print(f"Error saving image {e}")
