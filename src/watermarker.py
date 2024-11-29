@@ -93,7 +93,7 @@ def save(image, watermark):
             opacity = opacity.point(lambda p: p*0.6)
             transparent_wm.putalpha(opacity)
 
-            # Watermrk is pasted on a new blank image, which will then be pasted on the image to be watermarked
+            # Watermrk is pasted on a new blank image at a random position, which will then be pasted on the image to be watermarked
             new_img = Image.new('RGBA', size=(img.width, img.height), color=(255, 255, 255, 0))
             x = random.randrange(5, (new_img.width-resized_wm.width))
             y = random.randrange(5, (new_img.height-resized_wm.height))
