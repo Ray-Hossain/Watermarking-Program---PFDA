@@ -84,19 +84,22 @@ def save(image, watermark):
 
     try:
         with Image.open(image) as img, Image.open(watermark) as wm:
-
+            # Resizes watermark in order to fit it within the cofines of the image
             resized_wm = wm.resize((wm.width//2, wm.height//2))
             transparent_wm = resized_wm.convert("RGBA")
 
+            # Lowers the opacity of the image; Change the value of the decimal inside .point()
             opacity = transparent_wm.getchannel("A")
             opacity = opacity.point(lambda p: p*0.6)
             transparent_wm.putalpha(opacity)
 
+            # Watermrk is pasted on a new blank image, which will then be pasted on the image to be watermarked
             new_img = Image.new('RGBA', size=(img.width, img.height), color=(255, 255, 255, 0))
             x = random.randrange(5, (new_img.width-resized_wm.width))
             y = random.randrange(5, (new_img.height-resized_wm.height))
             new_img.paste(transparent_wm, (x, y), mask=transparent_wm.getchannel('A'))
 
+            # Calls custom save() function to save image with a custom name
             img = img.convert("RGBA")
             img.alpha_composite(new_img)
             img.save(filepath.name+".png")
@@ -114,7 +117,7 @@ def main():
 
     art = UI(screen)
     gui_init(art)
-
+    
     running = True
     img = None
     wm = None
